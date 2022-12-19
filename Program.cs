@@ -11,6 +11,7 @@ builder.Services.Configure<WorkTrackerDatabaseSettings>(
     builder.Configuration.GetSection("WorkTrackerDatabase"));
 
 builder.Services.AddSingleton<TasksService>();
+builder.Services.AddSingleton<JwtGenerator>();
 builder.Services.AddControllers().AddNewtonsoftJson();
 // builder.Services.AddDbContext<TaskContext>(opt =>
 //     opt.UseInMemoryDatabase("TaskList"));
