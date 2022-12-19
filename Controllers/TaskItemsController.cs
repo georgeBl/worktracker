@@ -11,6 +11,8 @@ using System.Diagnostics;
 using WorckTracker.Services;
 using WorkTracker.Models;
 
+using MongoDB.Bson;
+
 namespace WorkTracker.Controllers;
 
 
@@ -30,7 +32,7 @@ public class TaskItemsController : ControllerBase
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<TaskItem>> Get(string id)
     {
-        var taskItem = await _tasksService.GetAsync(id);
+        var taskItem = await _tasksService.GetAsync(ObjectId.Parse(id));
 
         if(taskItem is null)
         {
@@ -39,10 +41,6 @@ public class TaskItemsController : ControllerBase
         return taskItem;
 
     }
-
-    
-
-    
 
     [HttpPost]
     public async Task<IActionResult> Post(TaskItem newtaskItem)
@@ -55,7 +53,7 @@ public class TaskItemsController : ControllerBase
     [HttpPut("{id:length(24)}")]
      public async Task<IActionResult> Update(string id, TaskItem updatedTaskItem)
     {
-        var taskItem = await _tasksService.GetAsync(id);
+        var taskItem = await _tasksService.GetAsync(ObjectId.Parse(id));
         
         if(taskItem is null)
         {
@@ -63,7 +61,7 @@ public class TaskItemsController : ControllerBase
         }
         updatedTaskItem.Id = taskItem.Id;
 
-        await _tasksService.UpdateAsync(id, updatedTaskItem);
+        await _tasksService.UpdateAsync(ObjectId.Parse(id), updatedTaskItem);
 
         return NoContent();
     }
@@ -71,13 +69,13 @@ public class TaskItemsController : ControllerBase
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var taskItem = await _tasksService.GetAsync(id);
+        var taskItem = await _tasksService.GetAsync(ObjectId.Parse(id));
         if (taskItem is null)
         {
             return NotFound();
         }
 
-        await _tasksService.RemoveAsync(id);
+        await _tasksService.RemoveAsync(ObjectId.Parse(id));
 
         return NoContent();
         

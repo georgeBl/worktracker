@@ -1,0 +1,7 @@
+[
+    {
+        "op":"replace",
+        "patch":"secret",
+        "value":"new secret baby!!!!"
+    }
+]
